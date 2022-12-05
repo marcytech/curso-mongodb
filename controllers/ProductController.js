@@ -28,7 +28,6 @@ module.exports = class ProductController {
     res.redirect('/products')
   }
   static async getProduct(req, res) {
-    console.log('===================>')
     const id = req.params.id
 
     const product = await Product.getProductById(id)
