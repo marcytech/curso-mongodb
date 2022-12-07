@@ -1,71 +1,65 @@
-const Product = require('../models/Product')
+const Product = require("../models/Product")
 
 module.exports = class ProductController {
-  // static async showProducts(req, res) {
-  //   const products = await Product.getProducts()
+	static async showProducts(req, res) {
+		const products = await Product.find().lean()
 
-  //   res.render('products/all', { products })
-  // }
+		res.render("products/all", { products })
+	}
 
-  static createProduct(req, res) {
+	static createProduct(req, res) {
+		res.render("products/create")
+	}
 
-    res.render('products/create')
+	static async createProductPost(req, res) {
+		const name = req.body.name
+		const image = req.body.image
+		const price = req.body.price
+		const description = req.body.description
 
-  }
+  const product = new Product({name, image, price, description})
 
-  static async createProductPost(req, res) {
+		await product.save()
 
-    const name = req.body.name
-    const image = req.body.image
-    const price = req.body.price
-    const description = req.body.description
+		res.redirect("/products")
+	}
+	static async getProduct(req, res) {
+	  const id = req.params.id
 
+	  const product = await Product.findById(id).lean()
 
-    const product = new Product({name,image, price, description})
+	  res.render('products/product', { product })
+	}
 
-    await product.save()
+	// static async removeProduct(req, res) {
+	//   const id = req.params.id
 
-    res.redirect('/products')
-  }
-  // static async getProduct(req, res) {
-  //   const id = req.params.id
+	//    await Product.removeProductById(id)
 
-  //   const product = await Product.getProductById(id)
+	//   res.redirect('/products')
 
-  //   res.render('products/product', { product })
-  // }
+	// }
 
-  // static async removeProduct(req, res) {
-  //   const id = req.params.id
+	// static async editProduct(req, res)  {
+	//   const id = req.params.id
 
-  //    await Product.removeProductById(id)
+	//   const product = await Product.getProductById(id)
 
-  //   res.redirect('/products')
+	//   res.render('products/edit', { product })
+	// }
 
-  // }
+	// static async editProductPost(req, res) {
 
-  // static async editProduct(req, res)  {
-  //   const id = req.params.id
+	//   const id = req.body.id
+	//   const name = req.body.name
+	//   const image = req.body.image
+	//   const price = req.body.price
+	//   const description = req.body.description
 
-  //   const product = await Product.getProductById(id)
+	//   const product = new Product(name, image, price, description)
 
-  //   res.render('products/edit', { product })
-  // }
+	//   await product.updateProduct(id)
 
-  // static async editProductPost(req, res) {
-
-  //   const id = req.body.id
-  //   const name = req.body.name
-  //   const image = req.body.image
-  //   const price = req.body.price
-  //   const description = req.body.description
-
-
-  //   const product = new Product(name, image, price, description)
-
-  //   await product.updateProduct(id)
-
-  //   res.redirect('/products')
-  // }
-
+	//   res.redirect('/products')
+	// }
 }
